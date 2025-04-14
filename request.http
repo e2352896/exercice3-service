@@ -1,0 +1,290 @@
+### Connexion d'un administrateur
+POST http://localhost:3000/api/auth/admin
+Content-Type: application/json
+
+{
+  "email": "admin@site.com",
+  "password": "admin123"
+}
+
+### token de l'administrateur
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzQ0NTk1NzA4LCJleHAiOjE3NDQ1OTkzMDh9.6iw7eAI5mX4nuzhOuZso0Emk9mEbR53JYeooZX6MSG4
+
+### Connexion d'un admin avec un mot de passe incorrect
+POST http://localhost:3000/api/auth/admin
+Content-Type: application/json
+
+{
+  "email": "admin@site.com",
+  "password": "incorrect"
+}
+
+### Connexion d'un compte admin non existant
+POST http://localhost:3000/api/auth/admin
+Content-Type: application/json
+
+{
+  "email": "fauxadmin@site.com",
+  "password": "admin123"
+}
+
+### Inscription d'un nouvel utilisateur
+POST http://localhost:3000/api/auth/new
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "email": "user@site.com",
+    "password": "user123",
+    "role": "utilisateur"
+}
+
+### Inscription un nouveau technicien
+POST http://localhost:3000/api/auth/new
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "email": "tech@site.com",
+    "password": "tech123",
+    "role": "technicien"
+}
+
+### Inscription d'un nouvel utilisateur avec un email déjà utilisé
+POST http://localhost:3000/api/auth/new
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "email": "user@site.com",
+    "password": "test",
+    "role": "utilisateur"
+}
+
+### Inscription d'un nouvel utilisateur sans token
+POST http://localhost:3000/api/auth/new
+Content-Type: application/json
+
+{
+    "email": "user@site.com",
+    "password": "test",
+    "role": "utilisateur"
+}
+
+### Authentification d'un utilisateur
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "user@site.com",
+    "password": "user123"
+}
+
+
+### token de l'utilisateur
+@tokenUser = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6InV0aWxpc2F0ZXVyIiwiaWF0IjoxNzQ0NTk1OTkxLCJleHAiOjE3NDQ1OTk1OTF9.EoztyfTtIIh4pTgd1MICaMno3y3a7EpyiM2M5vhPgxQ
+
+### Authentification d'un technicien
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "tech@site.com",
+    "password": "tech123"
+}
+
+### token du technicien
+@tokenTech = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Mywicm9sZSI6InRlY2huaWNpZW4iLCJpYXQiOjE3NDQ1OTYzMTksImV4cCI6MTc0NDU5OTkxOX0.WrXGo0AAIGULy-iAvE56f0rrfqg5OnWish5fb15WeFg
+
+### Authentification d'un utilisateur avec un mot de passe incorrect
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "tech@site.com",
+    "password": "incorrect"
+}
+
+### Authentification d'un utilisateur avec un email incorrect
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "incorrect@site.com",
+    "password": "incorrect"
+}
+
+### Authentification d'un admin dans la route utilisateur
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+    "email": "admin@site.com",
+    "password": "admin123"
+}
+
+### Création d'un nouveau ticket par un utilisateur 
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
+
+{
+    "title": "Premier ticket",
+    "description": "Voici le premier ticket", 
+    "status": "open",
+    "createdAt": "2025-04-13"
+}
+
+### Création d'un nouveau ticket par un technicien 
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+{
+    "title": "Deuxieme ticket",
+    "description": "Voici le deuxieme ticket", 
+    "status": "open",
+    "createdAt": "2025-04-13"
+}
+
+### Création d'un nouveau ticket par un admin
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "title": "Test",
+    "description": "Voici le test ticket", 
+    "status": "open",
+    "createdAt": "2025-04-13"
+}
+
+### Création d'un nouveau ticket sans token
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+
+{
+    "title": "Test",
+    "description": "Voici le test ticket", 
+    "status": "open",
+    "createdAt": "2025-04-13"
+}
+
+### Création d'un nouveau ticket sans title
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+{
+    "title": "",
+    "description": "Voici le test ticket", 
+    "status": "open",
+    "createdAt": "2025-04-13"
+}
+
+### Création d'un nouveau ticket sans description
+POST http://localhost:3000/api/tickets 
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+{
+    "title": "Test",
+    "description": "", 
+    "status": "open",
+    "createdAt": "2025-04-13"
+}
+
+### Création d'un nouveau ticket avec un status incorrect
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+{
+    "title": "Test",
+    "description": "Voici le test ticket", 
+    "status": "incorrect",
+    "createdAt": "2025-04-13"
+}
+
+
+### Création d'un nouveau ticket avec une date incorrecte
+POST http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+{
+    "title": "Test",
+    "description": "Voici le test ticket", 
+    "status": "open",
+    "createdAt": "20-04-013"
+}
+
+### Obtenir la liste de tous les tickets par un technicien
+GET http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+
+### Obtenir la liste de tous les tickets par un utilisateur
+GET http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
+
+### Obtenir la liste de tous les tickets par un admin
+GET http://localhost:3000/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Obtenir la liste de tous les tickets sans token
+GET http://localhost:3000/api/tickets
+Content-Type: application/json
+
+### Obtenir les détails d'un ticket
+GET http://localhost:3000/api/tickets/1
+Content-Type: application/json
+
+### Mettre a jour un ticket par un technicien
+PUT http://localhost:3000/api/tickets/1
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+{
+    "title": "Ticket modifié",
+    "description": "Modifié", 
+    "status": "in progress",
+    "createdAt": "2025-04-13"
+}
+
+### Mettre a jour un ticket par un utilisateur
+PUT http://localhost:3000/api/tickets/2
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
+
+{
+    "title": "Ticket modifié",
+    "description": "Modifié", 
+    "status": "in progress",
+    "createdAt": "2025-04-13"
+}
+
+### Supprimer un ticket par un admin
+DELETE http://localhost:3000/api/admin/tickets/3
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+
+### Supprimer un ticket par un technicien
+DELETE http://localhost:3000/api/admin/tickets/2
+Content-Type: application/json
+Authorization: Bearer {{tokenTech}}
+
+
+### Supprimer un ticket par un utilisateur
+DELETE http://localhost:3000/api/admin/tickets/2
+Content-Type: application/json
+Authorization: Bearer {{tokenUser}}
+
+
+#### Supprimer un ticket sans token
+DELETE http://localhost:3000/api/admin/tickets/2
+Content-Type: application/json
